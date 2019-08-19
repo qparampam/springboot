@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management Application</title>
+</head>
+<body>
+<input type="button" value="Logout"
+       onclick="window.location.href='/logout'; return false;"/>
+<form name="user" method="POST">
+    <div align="center">
+        <table border="1" cellpadding="5">
+            <caption>
+                <h2>
+                    Add New User
+                </h2>
+            </caption>
+            <tr>
+                <th>User Login: </th>
+                <td>
+                    <input required type="text" name="login" size="45"/>
+                </td>
+            </tr>
+            <tr>
+                <th>User Password : </th>
+                <td>
+                    <input required type="text" name="password" size="45"/>
+                </td>
+            </tr>
+            <tr>
+                <th>User Role : </th>
+                <td>
+                    <input  type="checkbox" name="roles" value="1" > Admin
+                    <input  type="checkbox" name="roles" value="2"> User
+                </td>
+            </tr>
+            <td colspan="2" align="center">
+                <input type="submit" value="/add" />
+            </td>
+            </tr>
+        </table>
+    </div>
+</form>
+
+</body>
+</html>
