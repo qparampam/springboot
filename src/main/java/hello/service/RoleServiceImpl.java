@@ -1,22 +1,22 @@
 package hello.service;
 
-import hello.dao.RoleDao;
 import hello.model.Role;
+import hello.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoleServiceImpl implements RoleService{
 
-    private RoleDao roleDao;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public RoleServiceImpl(RoleDao roleDao){
-        this.roleDao = roleDao;
+    public RoleServiceImpl(RoleRepository roleRepository){
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public Role getById(int id) {
-        return roleDao.getById(id);
+        return roleRepository.findById(id).get();
     }
 }

@@ -17,6 +17,6 @@ public interface UserService {
     public List<User> listUsers();
 
     User findByUserLogin(String login);
-
-    boolean checkTitle(String login);
+//
+//    boolean checkTitle(String login);
 }
