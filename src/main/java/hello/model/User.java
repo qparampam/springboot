@@ -14,7 +14,7 @@ import java.util.Set;
 public class User implements UserDetails {
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "login")
@@ -23,7 +23,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(name = "users_role",
             joinColumns = {@JoinColumn(name = "users_id")},
             inverseJoinColumns = {@JoinColumn(name = "roles_id")})

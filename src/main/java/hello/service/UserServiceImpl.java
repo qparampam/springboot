@@ -28,16 +28,16 @@ public class UserServiceImpl implements UserService {
     public void addUser(User user) {
         String password = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(password);
-        user.setRoles(getRoleSet(user));
-        userRepository.saveAndFlush(user);
+//        user.setRoles(getRoleSet(user));
+        userRepository.save(user);
     }
 
     @Override
     public void updateUser(User user) {
         String password = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(password);
-        user.setRoles(getRoleSet(user));
-        userRepository.saveAndFlush(user);
+//        user.setRoles(getRoleSet(user));
+        userRepository.save(user);
     }
 
     @Override
@@ -57,22 +57,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUserLogin(String login) {
-        return userRepository.findByLogin(login);
+        return userRepository.findByLogin(login).get();
     }
 
-    private Set<Role> getRoleSet(User user) {
-        Role roleAdmin = roleService.getById(1);
-        Role roleUser = roleService.getById(2);
-        Set<Role> roleSet = new HashSet<>();
-        for (Role role : user.getRoles()) {
-            System.out.println("ROLSE ROIS: " + role);
-            if (role.getRole().equals("ROLE_ADMIN")) {
-                roleSet.add(roleAdmin);
-            }
-            if (role.getRole().equals("ROLE_USER")) {
-                roleSet.add(roleUser);
-            }
-        }
-        return roleSet;
-    }
+//    @Override
+//    public User findByUserLogin(String login) {
+//        return userRepository.findByLogin(login);
+//    }
+
+
+//    private Set<Role> getRoleSet(User user) {
+//        Role roleAdmin = roleService.getById(1);
+//        Role roleUser = roleService.getById(2);
+//        Set<Role> roleSet = new HashSet<>();
+//        for (Role role : user.getRoles()) {
+//            System.out.println("ROLSE ROIS: " + role);
+//            if (role.getRole().equals("ROLE_ADMIN")) {
+//                roleSet.add(roleAdmin);
+//            }
+//            if (role.getRole().equals("ROLE_USER")) {
+//                roleSet.add(roleUser);
+//            }
+//        }
+//        return roleSet;
+//    }
 }

@@ -35,7 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()); // Передаю в объект auth своего юзера и декодер пароля
+    //    auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()); // Передаю в объект auth своего юзера и декодер пароля
+        auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
     }
 
     @Override
