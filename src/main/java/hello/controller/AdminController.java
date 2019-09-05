@@ -1,12 +1,18 @@
 package hello.controller;
 
+import hello.model.Role;
 import hello.model.User;
+import hello.repository.RoleRepository;
 import hello.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -29,7 +35,12 @@ public class AdminController {
     }
 
     @PostMapping(value = "/add")
-    public ModelAndView addUser(User user) {
+    public ModelAndView addUser(User user, @RequestParam("roleseee") String[] roles) {
+        Role role = new Role(roles[0]);
+        Set<Role> roleses = new HashSet<>();
+        roleses.add(role);
+        user.setRoles(roleses);
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin");
         userService.addUser(user);
@@ -49,4 +60,5 @@ public class AdminController {
         userService.removeUser(id);
         return "redirect:/admin";
     }
+
 }

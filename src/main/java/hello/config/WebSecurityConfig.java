@@ -35,15 +35,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    //    auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()); // Передаю в объект auth своего юзера и декодер пароля
-        auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()); // Передаю в объект auth своего юзера и декодер пароля
+    //    auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN") // Страница admin доступна только пользователям с ролью admin
-                .anyRequest().authenticated() // Гарантирует, что любой запрос к нашему приложению требует аутентификации пользователя
+                .anyRequest()
+                .permitAll()// Разрешить все запросы на форму логина
+//                .authenticated() // Гарантирует, что любой запрос к нашему приложению требует аутентификации пользователя
                 .and().formLogin() // Пользователей аутетифицируем через форму логина
                 .permitAll()// Разрешить все запросы на форму логина
                 .failureHandler(authenticationFailureHandler) // Используй мой обработчик ошибок

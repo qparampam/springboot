@@ -2,6 +2,7 @@ package hello.service;
 
 import hello.model.Role;
 import hello.model.User;
+import hello.repository.RoleRepository;
 import hello.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,20 +16,25 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository){
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public void addUser(User user) {
         String password = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(password);
-//        user.setRoles(getRoleSet(user));
+
+        for (Role role : user.getRoles()){
+            if(roleRepository.findByRole(role.getRole()) != null){
+                user.setRoles(getRoleSet(user));
+            }
+        }
+
         userRepository.save(user);
     }
 
@@ -60,25 +66,18 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByLogin(login).get();
     }
 
-//    @Override
-//    public User findByUserLogin(String login) {
-//        return userRepository.findByLogin(login);
-//    }
-
-
-//    private Set<Role> getRoleSet(User user) {
-//        Role roleAdmin = roleService.getById(1);
-//        Role roleUser = roleService.getById(2);
-//        Set<Role> roleSet = new HashSet<>();
-//        for (Role role : user.getRoles()) {
-//            System.out.println("ROLSE ROIS: " + role);
-//            if (role.getRole().equals("ROLE_ADMIN")) {
-//                roleSet.add(roleAdmin);
-//            }
-//            if (role.getRole().equals("ROLE_USER")) {
-//                roleSet.add(roleUser);
-//            }
-//        }
-//        return roleSet;
-//    }
+    private Set<Role> getRoleSet(User user) {
+        Role roleAdmin = roleRepository.findByRole("ROLE_ADMIN");
+        Role roleUser = roleRepository.findByRole("ROLE_USER");
+        Set<Role> roleSet = new HashSet<>();
+        for (Role role : user.getRoles()) {
+            if (role.getRole().equals("ROLE_ADMIN")) {
+                roleSet.add(roleAdmin);
+            }
+            if (role.getRole().equals("ROLE_USER")) {
+                roleSet.add(roleUser);
+            }
+        }
+        return roleSet;
+    }
 }
